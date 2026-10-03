@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小王的一天 — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="admin">
+
+  <!-- ===================== ADMIN LOGIN ===================== -->
+  <section id="view-admin-login" class="view active">
+    <div class="admin-login-wrap">
+      <div class="login-card">
+        <div class="brand">
+          <div class="brand-logo">王</div>
+          <div>
+            <h1>小王的一天</h1>
+            <p class="brand-sub">ADMIN PANEL</p>
+          </div>
+        </div>
+
+        <div class="admin-badge">🔐 Akses Administrator</div>
+        <p class="admin-login-note">
+          Halaman ini khusus administrator. Gunakan akun admin yang sudah dibuat oleh pemilik sistem.
+        </p>
+
+        <form id="admin-login-form" autocomplete="off">
+          <label class="field">
+            <span>Email Admin</span>
+            <input type="email" id="admin-email" placeholder="admin@sekolah.com" required />
+          </label>
+
+          <label class="field">
+            <span>Password</span>
+            <input type="password" id="admin-password" placeholder="Password admin" required />
+          </label>
+
+          <button type="submit" class="btn btn-primary btn-block" id="admin-login-submit">Masuk ke Panel</button>
+        </form>
+
+        <a class="admin-back" href="/">← Kembali ke portal mahasiswa</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ADMIN ===================== -->
+  <section id="view-admin" class="view">
+    <header class="topbar">
+      <div class="brand-sm">
+        <div class="brand-logo">王</div>
+        <span>小王的一天 · Admin</span>
+      </div>
+      <div class="user-info">
+        <span id="admin-name" class="user-name"></span>
+        <button class="btn btn-ghost" id="logout-btn-2">Keluar</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="page-head">
+        <div>
+          <h1>Kelola Konten Kuis</h1>
+          <p>Kelola materi dan kuis untuk siswa.</p>
+        </div>
+        <button class="btn btn-primary" id="add-content-btn">+ Tambah Konten</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:60px">No</th>
+              <th>Judul</th>
+              <th>Tema / Sub Judul</th>
+              <th style="width:160px">Tanggal Upload</th>
+              <th style="width:160px">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tbody">
+            <tr><td colspan="5" class="empty">Memuat data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </section>
+
+  <!-- ===================== MODAL PREVIEW ===================== -->
+  <div class="modal" id="modal-preview" aria-hidden="true">
+    <div class="modal-card modal-preview">
+      <div class="modal-head">
+        <div>
+          <h2>👁 Preview Konten</h2>
+          <p class="modal-sub">Tampilan konten yang akan dilihat oleh siswa.</p>
+        </div>
+        <button class="icon-btn" data-close aria-label="Tutup">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="preview-card">
+          <div class="preview-img" id="preview-img"></div>
+          <span class="badge" id="preview-badge">Latihan</span>
+          <h3 id="preview-title">—</h3>
+          <p id="preview-desc" class="muted">—</p>
+          <div class="file-row" id="preview-file-row">
+            <div class="file-icon">FILE</div>
+            <div class="file-meta">
+              <strong id="preview-file-name">—</strong>
+              <span id="preview-file-size" class="muted">—</span>
+            </div>
+            <a class="btn btn-outline" id="preview-download" download target="_blank">⬇ Unduh</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn btn-ghost" data-close>Tutup</button>
+        <button class="btn btn-primary" id="preview-start">Mulai Latihan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL FORM ===================== -->
+  <div class="modal" id="modal-form" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2 id="form-title">Tambah Konten Kuis</h2>
+        <button class="icon-btn" data-close aria-label="Tutup">✕</button>
+      </div>
+
+      <form id="content-form" class="modal-body" autocomplete="off">
+        <label class="field">
+          <span>Judul Konten *</span>
+          <input type="text" id="f-judul" required placeholder="Latihan 1" />
+        </label>
+
+        <label class="field">
+          <span>Tema / Sub Judul *</span>
+          <input type="text" id="f-tema" required placeholder="Sistem Pernapasan" />
+        </label>
+
+        <label class="field">
+          <span>Deskripsi (opsional)</span>
+          <textarea id="f-deskripsi" rows="3" placeholder="Kuis untuk menguji pemahaman..."></textarea>
+        </label>
+
+        <label class="field">
+          <span>Upload Gambar / Background</span>
+          <input type="file" id="f-gambar" accept="image/*" />
+          <small class="hint">Format: JPG, PNG (maks. 5MB)</small>
+          <div id="f-gambar-preview" class="img-preview hidden"></div>
+        </label>
+
+        <label class="field">
+          <span>File Kuis (opsional)</span>
+          <input type="file" id="f-file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx" />
+          <div id="f-file-name" class="file-name muted"></div>
+        </label>
+
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost" data-close>Batal</button>
+          <button type="submit" class="btn btn-primary" id="form-submit">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL LATIHAN ===================== -->
+  <div class="modal" id="modal-quiz" aria-hidden="true">
+    <div class="modal-card modal-quiz">
+      <div class="modal-head">
+        <h2 id="quiz-title">Latihan</h2>
+        <button class="icon-btn" data-close aria-label="Tutup">✕</button>
+      </div>
+      <div class="modal-body quiz-body">
+        <div class="preview-img large" id="quiz-img"></div>
+        <p class="muted" id="quiz-desc"></p>
+        <div class="quiz-note">Mode latihan dimulai. Silakan amati gambar, lalu tekan <b>Selesai</b> bila sudah selesai.</div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" data-close>Tutup</button>
+        <button class="btn btn-primary" id="quiz-finish">Selesai</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>

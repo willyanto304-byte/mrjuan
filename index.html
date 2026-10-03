@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>小王的一天 — Latihan Interaktif</title>
+<title>小王的一天 — Latihan Interaktif & Analytics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -73,8 +73,8 @@
 
   <main class="container">
     <div class="hero">
-      <h1>Mau mulai dari mana?</h1>
-      <p>Pilih latihan di bawah untuk mulai belajar.</p>
+      <h1>Mau mulai latihan dari mana?</h1>
+      <p>Pilih kuis di bawah ini dan perhatikan batas tenggat waktu (deadline) pengerjaannya.</p>
     </div>
     <div class="cards" id="student-cards">
       <div class="empty">Memuat latihan…</div>
@@ -87,7 +87,7 @@
   <header class="topbar">
     <div class="brand-sm">
       <div class="brand-logo">王</div>
-      <span>小王的一天 · Admin</span>
+      <span>小王的一天 · Admin Panel</span>
     </div>
     <div class="user-info">
       <span id="admin-name" class="user-name"></span>
@@ -96,29 +96,91 @@
   </header>
 
   <main class="container">
-    <div class="page-head">
-      <div>
-        <h1>Kelola Konten Kuis</h1>
-        <p>Kelola materi dan kuis untuk siswa.</p>
+    <!-- Analytics Ringkasan Dashboard -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">Total Konten / Kuis</div>
+        <div class="stat-number" id="stat-total-quiz">0</div>
+        <div class="stat-sub">Materi aktif</div>
       </div>
-      <button class="btn btn-primary" id="add-content-btn">+ Tambah Konten</button>
+      <div class="stat-card">
+        <div class="stat-title">Total Pengerjaan</div>
+        <div class="stat-number" id="stat-total-submits">0</div>
+        <div class="stat-sub">Siswa telah mengerjakan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Rata-Rata Nilai</div>
+        <div class="stat-number" id="stat-avg-score">0</div>
+        <div class="stat-sub">Skala 0 - 100</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Akurasi Jawaban</div>
+        <div class="stat-number" id="stat-accuracy">0%</div>
+        <div class="stat-sub" id="stat-accuracy-sub">0% Benar / 0% Salah</div>
+      </div>
     </div>
 
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th style="width:60px">No</th>
-            <th>Judul</th>
-            <th>Tema / Sub Judul</th>
-            <th style="width:160px">Tanggal Upload</th>
-            <th style="width:160px">Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="admin-tbody">
-          <tr><td colspan="5" class="empty">Memuat data…</td></tr>
-        </tbody>
-      </table>
+    <!-- Admin Nav Tabs -->
+    <div class="admin-tabs">
+      <button class="tab-btn active" data-tab="tab-quiz">Kelola Materi & Kuis</button>
+      <button class="tab-btn" data-tab="tab-recap">Rekap Nilai & Analisis Siswa</button>
+    </div>
+
+    <!-- Tab 1: Kelola Materi -->
+    <div id="tab-quiz" class="tab-content active">
+      <div class="page-head">
+        <div>
+          <h2>Daftar Konten Kuis</h2>
+          <p>Kelola materi, deadline, teks bacaan, dan soal untuk siswa.</p>
+        </div>
+        <button class="btn btn-primary" id="add-content-btn">+ Tambah Konten Kuis</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:50px">No</th>
+              <th>Judul & Tema</th>
+              <th>Deadline</th>
+              <th style="width:120px">Jml Soal</th>
+              <th style="width:150px">Tanggal Upload</th>
+              <th style="width:140px">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tbody">
+            <tr><td colspan="6" class="empty">Memuat data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 2: Rekap Nilai -->
+    <div id="tab-recap" class="tab-content">
+      <div class="page-head">
+        <div>
+          <h2>Rekap Hasil Pengerjaan Siswa</h2>
+          <p>Data performa dan analisis persentase benar-salah siswa.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:50px">No</th>
+              <th>Nama Siswa / NIM</th>
+              <th>Judul Kuis</th>
+              <th>Nilai</th>
+              <th>Persentase Jawaban</th>
+              <th>Waktu Selesai</th>
+            </tr>
+          </thead>
+          <tbody id="recap-tbody">
+            <tr><td colspan="6" class="empty">Belum ada data pengerjaan kuis.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
 </section>
@@ -128,8 +190,8 @@
   <div class="modal-card modal-preview">
     <div class="modal-head">
       <div>
-        <h2>👁 Preview Konten</h2>
-        <p class="modal-sub">Tampilan konten yang akan dilihat oleh siswa.</p>
+        <h2>👁 Detail Kuis & Instruksi</h2>
+        <p class="modal-sub">Periksa detail sebelum memulai latihan.</p>
       </div>
       <button class="icon-btn" data-close aria-label="Tutup">✕</button>
     </div>
@@ -140,25 +202,30 @@
         <span class="badge" id="preview-badge">Latihan</span>
         <h3 id="preview-title">—</h3>
         <p id="preview-desc" class="muted">—</p>
+
+        <div class="deadline-box" id="preview-deadline-box">
+          ⏰ <strong>Batas Tenggat (Deadline):</strong> <span id="preview-deadline">—</span>
+        </div>
+
         <div class="file-row" id="preview-file-row">
           <div class="file-icon">FILE</div>
           <div class="file-meta">
             <strong id="preview-file-name">—</strong>
             <span id="preview-file-size" class="muted">—</span>
           </div>
-          <a class="btn btn-outline" id="preview-download" download target="_blank">⬇ Unduh</a>
+          <a class="btn btn-outline" id="preview-download" download target="_blank">⬇ Unduh Lampiran</a>
         </div>
       </div>
     </div>
 
     <div class="modal-foot">
       <button class="btn btn-ghost" data-close>Tutup</button>
-      <button class="btn btn-primary" id="preview-start">Mulai Latihan</button>
+      <button class="btn btn-primary" id="preview-start">Mulai Kerjakan Soal</button>
     </div>
   </div>
 </div>
 
-<!-- ===================== MODAL FORM ===================== -->
+<!-- ===================== MODAL FORM ADMIN (INPUT TERPISAH) ===================== -->
 <div class="modal" id="modal-form" aria-hidden="true">
   <div class="modal-card">
     <div class="modal-head">
@@ -168,19 +235,62 @@
 
     <form id="content-form" class="modal-body" autocomplete="off">
       <label class="field">
-        <span>Judul Konten *</span>
-        <input type="text" id="f-judul" required placeholder="Latihan 1" />
+        <span>Judul Konten Kuis *</span>
+        <input type="text" id="f-judul" required placeholder="Latihan Bab 1" />
       </label>
 
       <label class="field">
         <span>Tema / Sub Judul *</span>
-        <input type="text" id="f-tema" required placeholder="Sistem Pernapasan" />
+        <input type="text" id="f-tema" required placeholder="Pemahaman Bacaan (阅读理解)" />
       </label>
 
       <label class="field">
-        <span>Deskripsi (opsional)</span>
-        <textarea id="f-deskripsi" rows="3" placeholder="Kuis untuk menguji pemahaman..."></textarea>
+        <span>Batas Tenggat / Deadline *</span>
+        <input type="datetime-local" id="f-deadline" required />
       </label>
+
+      <label class="field">
+        <span>Deskripsi Singkat (opsional)</span>
+        <textarea id="f-deskripsi" rows="2" placeholder="Kuis ini menguji pemahaman teks bacaan Mandarin..."></textarea>
+      </label>
+
+      <hr class="form-divider" />
+
+      <!-- KHUSUS TEKS BACAAN (文章) -->
+      <label class="field">
+        <span>Label Teks Bacaan *</span>
+        <input type="text" id="f-article-title" required placeholder="文章一 / TEKS BACAAN 1" />
+      </label>
+
+      <label class="field">
+        <span>Isi Teks Bacaan (文章) *</span>
+        <textarea id="f-article-content" rows="6" placeholder="Tempelkan (paste) paragraf teks Mandarin di sini..." required></textarea>
+        <small class="hint">Anda dapat mengetik paragraf teks Mandarin secara langsung di sini tanpa perlu format JSON.</small>
+      </label>
+
+      <hr class="form-divider" />
+
+      <!-- KHUSUS SOAL PILIHAN GANDA (JSON ARRAY) -->
+      <label class="field">
+        <span>Daftar Soal Pilihan Ganda (Format JSON Array) *</span>
+        <textarea id="f-questions" rows="7" placeholder='[
+  {
+    "id": 1,
+    "question": "小李每天怎么去学校？",
+    "options": ["坐公交车", "骑自行车", "走路"],
+    "answer": 1
+  },
+  {
+    "id": 2,
+    "question": "下午没课的时候，小李一般做什么？",
+    "options": ["去打工", "去图书馆", "去睡觉"],
+    "answer": 1
+  }
+]' required></textarea>
+        <small class="hint">Masukkan daftar pertanyaan & pilihan jawaban (Index `answer`: 0 = A, 1 = B, 2 = C).</small>
+      </label>
+
+      <hr class="form-divider" />
 
       <label class="field">
         <span>Upload Gambar / Background</span>
@@ -190,34 +300,81 @@
       </label>
 
       <label class="field">
-        <span>File Kuis (opsional)</span>
+        <span>File Materi Tambahan (opsional)</span>
         <input type="file" id="f-file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx" />
         <div id="f-file-name" class="file-name muted"></div>
       </label>
 
       <div class="modal-foot">
         <button type="button" class="btn btn-ghost" data-close>Batal</button>
-        <button type="submit" class="btn btn-primary" id="form-submit">Simpan</button>
+        <button type="submit" class="btn btn-primary" id="form-submit">Simpan Konten</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- ===================== MODAL LATIHAN ===================== -->
+<!-- ===================== MODAL LATIHAN / INTERACTIVE QUIZ ===================== -->
 <div class="modal" id="modal-quiz" aria-hidden="true">
   <div class="modal-card modal-quiz">
     <div class="modal-head">
-      <h2 id="quiz-title">Latihan</h2>
+      <div>
+        <h2 id="quiz-title">Pengerjaan Kuis</h2>
+        <p class="modal-sub" id="quiz-subtitle">Jawab pertanyaan berdasarkan teks bacaan</p>
+      </div>
       <button class="icon-btn" data-close aria-label="Tutup">✕</button>
     </div>
+    
     <div class="modal-body quiz-body">
-      <div class="preview-img large" id="quiz-img"></div>
-      <p class="muted" id="quiz-desc"></p>
-      <div class="quiz-note">Mode latihan dimulai. Silakan amati gambar, lalu tekan <b>Selesai</b> bila sudah selesai.</div>
+      <!-- Area Split Layout Kuis -->
+      <div id="quiz-active-wrap">
+        <div class="quiz-split-grid">
+          
+          <!-- Kolom Kiri: Teks Bacaan (文章) -->
+          <div class="quiz-article-card" id="quiz-article-box">
+            <div class="article-tag" id="quiz-article-tag">文章 / TEKS BACAAN</div>
+            <div class="article-text" id="quiz-article-content">
+              <!-- Teks artikel akan dimuat di sini -->
+            </div>
+          </div>
+
+          <!-- Kolom Kanan: Soal & Pilihan Ganda -->
+          <div class="quiz-questions-wrap">
+            <div class="quiz-header-status">
+              <h3>选择正确答案</h3>
+              <span class="answered-counter" id="quiz-answered-count">0 / 0 dijawab</span>
+            </div>
+            <div id="quiz-container" class="quiz-questions-list"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Hasil Kuis -->
+      <div id="quiz-result-wrap" class="hidden">
+        <div class="result-card">
+          <div class="result-score-circle" id="result-score-circle">0</div>
+          <h3 id="result-status-title">Latihan Selesai!</h3>
+          <p id="result-status-sub" class="muted">Berikut rekapitulasi nilai Anda:</p>
+          
+          <div class="result-stats-row">
+            <div class="res-stat-item correct">
+              <span class="res-label">Jawaban Benar</span>
+              <strong id="res-correct-count">0</strong>
+              <span id="res-correct-pct" class="res-pct">(0%)</span>
+            </div>
+            <div class="res-stat-item wrong">
+              <span class="res-label">Jawaban Salah</span>
+              <strong id="res-wrong-count">0</strong>
+              <span id="res-wrong-pct" class="res-pct">(0%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
     <div class="modal-foot">
-      <button class="btn btn-ghost" data-close>Tutup</button>
-      <button class="btn btn-primary" id="quiz-finish">Selesai</button>
+      <button class="btn btn-ghost" id="quiz-cancel-btn" data-close>Batal</button>
+      <button class="btn btn-primary" id="quiz-submit-btn">Kirim Jawaban</button>
     </div>
   </div>
 </div>

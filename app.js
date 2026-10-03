@@ -115,13 +115,13 @@ async function handleLogin() {
   const password = $('#login-password').value;
 
   const { data, error } = await db.auth.signInWithPassword({ email, password });
-  if (error) return toast(error.message === 'Invalid login credentials' ? 'Email atau Password salah' : error.message, 'error');
-
-  const userRole = data.user.user_metadata.role || 'mahasiswa';
-  if (state.role !== userRole) {
-    await db.auth.signOut();
-    return toast(`Akun ini terdaftar sebagai ${userRole.toUpperCase()}. Silakan pilih role yang sesuai.`, 'error');
+  if (error) {
+    return toast(
+      error.message === 'Invalid login credentials' ? 'Email atau Password salah' : error.message, 
+      'error'
+    );
   }
+
   toast('Berhasil masuk!', 'success');
 }
 
